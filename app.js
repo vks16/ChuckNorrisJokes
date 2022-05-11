@@ -1,41 +1,79 @@
-document.getElementById("button").addEventListener('click', loadData);
+document.getElementById("button1").addEventListener("click", loadCustomer);
+document.getElementById("button2").addEventListener("click", loadCustomers);
 
-function loadData() {
-    // Create an XHR Object
+
+function loadCustomer(e) {
     const xhr = new XMLHttpRequest();
 
-    // Open
-    xhr.open("GET", 'data.txt', true);
+    xhr.open("GET", "customer.json", true);
 
-    // Optional - Used for spinners / loaders
-    xhr.onprogress = function() {
-        // readystate 3
-
-    }
-
-    xhr.onload = function() {
-        if(this.status === 200){
-            document.getElementById("output").innerHTML = `
-                <h1>${this.responseText}</h1>
+    xhr.onload = function () {
+        if (this.status === 200) {
+            const customer = JSON.parse(this.responseText);
+            document.getElementById("customer").innerHTML = `
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>${customer.id}</td>
+                        <td>${customer.name}</td>
+                        <td>${customer.phone}</td>
+                        </tr>
+                    </tbody>    
+                </table>
             `;
         }
     }
 
-    xhr.onerror = function() {
-        console.log('Request error...')
+    xhr.onerror = function () {
+        alert("error")
     }
 
     xhr.send();
+}
 
-    // readyState Values
-    // 0: request not initialized
-    // 1: server connection established
-    // 2: request received
-    // 3: processing request
-    // 4: request finished and response is ready
 
-    // HTTP Status
-    // 200: "OK"
-    // 403: "Forbidden"
-    // 404: "Not Found"
+function loadCustomers(e) {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("GET", "customers.json", true);
+
+    xhr.onload = function () {
+        if (this.status === 200) {
+            const customers = JSON.parse(this.responseText);
+            document.getElementById("customer").innerHTML = `
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    ${customers.map(customer => `<tr>
+<td>${customer.id}</td>
+<td>${customer.name}</td>
+<td>${customer.phone}</td>
+</tr>`)
+                }
+                    
+                    </tbody>    
+                </table>
+            `;
+        }
+    }
+
+    xhr.onerror = function () {
+        alert("error")
+    }
+
+    xhr.send();
 }
