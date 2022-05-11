@@ -17,6 +17,12 @@ function getJokes(event){
             document.querySelector(".jokes").innerHTML = output;
         }
     }
+
+    xhr.onerror = function(){
+        document.querySelector(".jokes").innerHTML = `
+            <h1>Network Error</h1>
+        `;
+    }
     xhr.send();
     
 }
